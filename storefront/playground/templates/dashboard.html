@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p>This is your dashboard.</p>
+    <p>AuCo: <span id="auco-value">{{ user.auCo }}</span></p>
+    <p>CAD: <span id="cad-value">{{ user.cad }}</span></p>
+    <form method="POST" id="add_money">
+        {% csrf_token %}
+
+        <label for="auco-input">Enter AuCo:</label>
+        <input type="number" name="auco_input" id="auco-input"><br>
+        <label for="cad-input">Enter CAD:&nbsp</label>
+        <input type="number" name="cad_input" id="cad-input"><br>
+
+        <input type="submit" value="Add AuCo" name="add_auco">
+        <input type="submit" value="Add CAD" name="add_cad">
+    </form>
+</body>
+<script type="text/javascript">
+    $(document).on('submit', '#add_money', function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'/add_money',
+            data:{
+                auco_input:$('auco_input').val(),
+                cad_input:$('cad_input').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(){
+
+            }
+        });
+    });
+</script>
+</html>
